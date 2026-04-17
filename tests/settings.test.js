@@ -48,3 +48,15 @@ describe('interval clamping', () => {
     ).toBe(60);
   });
 });
+
+describe('movementPixels clamping', () => {
+  test('clamps movementPixels below 1 up to 1', () => {
+    expect(normalizeSettings({ movementPixels: 0 }).movementPixels).toBe(1);
+  });
+
+  test('clamps movementPixels above 50 down to 50', () => {
+    expect(normalizeSettings({ movementPixels: 9999 }).movementPixels).toBe(
+      50,
+    );
+  });
+});
