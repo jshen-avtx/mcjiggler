@@ -233,6 +233,9 @@ app.whenReady().then(handleReady).catch((err) => {
   app.quit();
 });
 
-app.on('window-all-closed', (event) => {
-  event.preventDefault();
+// Keep the app alive when all windows are closed — tray icon stays active.
+// On macOS the default is already to stay alive, but being explicit here
+// prevents accidental quit if the behavior ever changes.
+app.on('window-all-closed', () => {
+  // do nothing — the tray icon keeps the app running
 });
