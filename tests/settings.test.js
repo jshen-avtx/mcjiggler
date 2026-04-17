@@ -26,3 +26,25 @@ describe('settings defaults', () => {
     expect(result.enabled).toBe(false);
   });
 });
+
+describe('interval clamping', () => {
+  test('clamps intervalSeconds below 1 up to 1', () => {
+    expect(normalizeSettings({ intervalSeconds: 0 }).intervalSeconds).toBe(1);
+    expect(normalizeSettings({ intervalSeconds: -5 }).intervalSeconds).toBe(1);
+  });
+
+  test('clamps intervalSeconds above 3600 down to 3600', () => {
+    expect(normalizeSettings({ intervalSeconds: 99999 }).intervalSeconds).toBe(
+      3600,
+    );
+  });
+
+  test('rejects non-finite intervalSeconds', () => {
+    expect(normalizeSettings({ intervalSeconds: NaN }).intervalSeconds).toBe(
+      60,
+    );
+    expect(
+      normalizeSettings({ intervalSeconds: Infinity }).intervalSeconds,
+    ).toBe(60);
+  });
+});
