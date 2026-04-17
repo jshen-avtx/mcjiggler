@@ -1,0 +1,46 @@
+{
+  "name": "mcjiggler",
+  "version": "0.1.0",
+  "description": "macOS menu-bar mouse jiggler",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "dist": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.jamesshen.mcjiggler",
+    "productName": "Mouse Jiggler",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": "dmg",
+      "extendInfo": {
+        "LSUIElement": true
+      }
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "lib/**/*",
+      "renderer/**/*",
+      "assets/**/*",
+      "package.json"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"],
+    "collectCoverageFrom": ["lib/**/*.js"]
+  },
+  "dependencies": {
+    "@nut-tree-fork/nut-js": "^4.2.0",
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3",
+    "jest": "^29.7.0"
+  }
+}
