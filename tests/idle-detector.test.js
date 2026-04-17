@@ -35,7 +35,9 @@ describe('reset', () => {
     const det = createIdleDetector({ toleranceSquared: 4 });
     det.observe({ x: 0, y: 0 });
     det.reset();
+    // first observe after reset: baseline, never user movement
     expect(det.observe({ x: 500, y: 500 })).toBe(false);
-    expect(det.observe({ x: 501, y: 501 })).toBe(false);
+    // second observe: no jiggle occurred since reset, so ANY movement is user movement
+    expect(det.observe({ x: 501, y: 501 })).toBe(true);
   });
 });

@@ -41,7 +41,10 @@ const syncMouse = {
 };
 
 const nodeClock = {
-  setTimeout: (fn, ms) => setTimeout(fn, ms),
+  setTimeout: (fn, ms) => setTimeout(async () => {
+    await mouseAdapter.poll();
+    fn();
+  }, ms),
   clearTimeout: (id) => clearTimeout(id),
 };
 
