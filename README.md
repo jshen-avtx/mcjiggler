@@ -18,13 +18,10 @@ A lightweight macOS menu-bar app that moves your mouse cursor at a configurable 
 
 ## Install
 
-**From GitHub (no clone needed):**
+**One-liner (no clone needed):**
 
 ```bash
-npm install github:jshen-avtx/mcjiggler
-cd node_modules/mcjiggler
-npm install
-npm start
+npx github:jshen-avtx/mcjiggler
 ```
 
 **Or clone and run:**
