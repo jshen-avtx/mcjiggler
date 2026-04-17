@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "macOS menu-bar mouse jiggler",
   "main": "main.js",
-  "private": true,
   "scripts": {
     "start": "electron .",
     "test": "jest",
