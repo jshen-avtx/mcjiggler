@@ -29,3 +29,13 @@ describe('createIdleDetector', () => {
     expect(det.observe({ x: 101, y: 101 })).toBe(true);
   });
 });
+
+describe('reset', () => {
+  test('reset makes the next observation a baseline again', () => {
+    const det = createIdleDetector({ toleranceSquared: 4 });
+    det.observe({ x: 0, y: 0 });
+    det.reset();
+    expect(det.observe({ x: 500, y: 500 })).toBe(false);
+    expect(det.observe({ x: 501, y: 501 })).toBe(false);
+  });
+});
