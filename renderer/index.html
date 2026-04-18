@@ -4,31 +4,29 @@
     <meta charset="utf-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; script-src 'self'"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"
     />
     <title>Mouse Jiggler</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=DM+Sans:wght@400;500;600;700&display=swap');
-
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :root {
-        --red: #B3261E;
-        --ink: #111111;
-        --dim: #555555;
-        --ghost: #bbbbbb;
+        --blue:   #007AFF;
+        --ink:    #1c1c1e;
+        --dim:    #6e6e73;
+        --border: rgba(0,0,0,0.12);
+        --bg:     #f5f5f7;
       }
 
       html, body {
         width: 280px;
         height: 260px;
         overflow: hidden;
-        background: #ffffff;
+        background: var(--bg);
         color: var(--ink);
-        font-family: 'DM Sans', system-ui, sans-serif;
-        font-size: 12px;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        font-size: 13px;
+        -webkit-font-smoothing: antialiased;
       }
 
       body {
@@ -36,58 +34,56 @@
         flex-direction: column;
       }
 
-      /* ── Thick top rule ── */
+      /* ── Top accent bar ── */
       .rule-top {
-        height: 5px;
-        background: var(--ink);
+        height: 3px;
+        background: var(--blue);
         flex-shrink: 0;
       }
 
       /* ── Masthead / header ── */
       .header {
-        padding: 8px 16px 3px;
-        border-bottom: 1px solid var(--ink);
+        padding: 8px 16px 6px;
+        border-bottom: 1px solid var(--border);
         flex-shrink: 0;
+        background: #ffffff;
       }
 
       .pub-label {
-        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 9px;
         font-weight: 500;
-        font-size: 8px;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
         color: var(--dim);
         margin-bottom: 2px;
       }
 
       h1 {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 26px;
-        font-weight: 900;
+        font-family: "New York", "Georgia", serif;
+        font-size: 24px;
+        font-weight: 700;
         font-style: italic;
         color: var(--ink);
-        line-height: 0.92;
-        letter-spacing: -0.02em;
+        line-height: 0.95;
+        letter-spacing: -0.01em;
       }
 
-      /* Tagline locked unit: hairline — text — hairline */
       .masthead-tagline {
-        margin-top: 1px;
+        margin-top: 4px;
       }
 
       .masthead-tagline .hairline {
         display: block;
-        height: 1px;
-        background: var(--ink);
+        height: 0.5px;
+        background: var(--border);
       }
 
       .vol-info {
-        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 8px;
         font-weight: 400;
-        font-size: 7.5px;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: var(--ink);
+        color: var(--dim);
         text-align: center;
         padding: 2px 0;
       }
@@ -99,65 +95,52 @@
         display: flex;
         flex-direction: column;
         min-height: 0;
+        background: #ffffff;
       }
 
-      /* All label/value rows */
       .status-row,
       .row {
         display: flex;
         align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid var(--ink);
+        padding: 11px 0;
+        border-bottom: 0.5px solid var(--border);
       }
 
-      /* STATUS label — receded */
       .status-label {
-        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 12px;
         font-weight: 500;
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #8A8A8A;
+        color: var(--dim);
         display: flex;
         align-items: center;
         gap: 6px;
       }
 
-      /* Red 2×8px bullet beside STATUS label when running */
+      /* Blue dot when running */
       .status-row:has(#status.on) .status-label::before {
         content: '';
         display: inline-block;
-        width: 2px;
-        height: 8px;
-        background: var(--red);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--blue);
         flex-shrink: 0;
       }
 
-      /* Status value — dominant */
       #status {
-        font-family: 'DM Sans', system-ui, sans-serif;
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 600;
         margin-left: auto;
-        color: #111;
+        color: var(--ink);
       }
 
-      #status.off { color: #111; }
-      #status.on  { color: #111; }
+      #status.on { color: var(--blue); }
 
-      /* Row labels — receded */
       .row .row-label {
-        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 12px;
         font-weight: 500;
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #8A8A8A;
+        color: var(--dim);
       }
 
-      /* Right-rail wrapper for values */
       .row-value {
         margin-left: auto;
         display: flex;
@@ -168,20 +151,21 @@
         width: 48px;
         background: transparent;
         border: none;
-        border-bottom: 1px solid var(--ink);
+        border-bottom: 1px solid var(--border);
         border-radius: 0;
-        color: #111;
-        font-family: 'DM Sans', system-ui, sans-serif;
-        font-weight: 700;
-        font-size: 16px;
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 13px;
         padding: 1px 0;
         outline: none;
         text-align: right;
+        -webkit-font-smoothing: antialiased;
       }
 
       input[type='number']:focus {
-        border-bottom-color: #000;
-        border-bottom-width: 2px;
+        border-bottom-color: var(--blue);
+        border-bottom-width: 1.5px;
       }
 
       /* Hide native checkbox */
@@ -193,82 +177,95 @@
         pointer-events: none;
       }
 
-      /* Custom checkbox via label pseudo-element */
+      /* macOS-style rounded checkbox */
       .checkbox-label {
         display: inline-block;
-        width: 14px;
-        height: 14px;
-        border: 1px solid #111;
-        border-radius: 0;
-        background: transparent;
+        width: 16px;
+        height: 16px;
+        border: 1.5px solid var(--border);
+        border-radius: 4px;
+        background: #f0f0f0;
         cursor: pointer;
         flex-shrink: 0;
         position: relative;
+        transition: background 0.1s, border-color 0.1s;
       }
 
       input[type='checkbox']:checked + .checkbox-label {
-        background: #111;
+        background: var(--blue);
+        border-color: var(--blue);
+      }
+
+      input[type='checkbox']:checked + .checkbox-label::after {
+        content: '';
+        position: absolute;
+        left: 3px;
+        top: 1px;
+        width: 5px;
+        height: 9px;
+        border: 2px solid #fff;
+        border-top: none;
+        border-left: none;
+        transform: rotate(45deg);
       }
 
       /* ── Pause row ── */
       .pause-row {
         display: flex;
         align-items: center;
-        height: 32px;
-        margin-bottom: 8px;
+        height: 36px;
         padding: 0;
       }
 
       .pause-row .row-label {
-        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 12px;
         font-weight: 500;
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #8A8A8A;
+        color: var(--dim);
       }
 
       /* ── Button row ── */
       .btn-row {
-        height: 40px;
+        height: 44px;
         display: flex;
-        align-items: stretch;
-        padding: 0 12px 12px;
+        align-items: center;
+        padding: 0 12px 10px;
+        gap: 8px;
         flex-shrink: 0;
+        background: var(--bg);
       }
 
       button {
-        font-family: 'DM Sans', system-ui, sans-serif;
-        font-weight: 600;
-        font-size: 10px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        border-radius: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        border-radius: 6px;
         cursor: pointer;
-        transition: background 0.15s, color 0.15s;
+        transition: opacity 0.1s;
+        -webkit-font-smoothing: antialiased;
       }
+
+      button:active { opacity: 0.75; }
 
       #quit {
-        flex: 40;
-        background: transparent;
-        color: #111;
-        border: 1px solid #111;
-        margin-right: 0;
+        flex: 4;
+        background: #ffffff;
+        color: var(--ink);
+        border: 1px solid var(--border);
       }
 
-      #quit:hover {
-        background: #f5f5f5;
-      }
+      #quit:hover { background: #ebebeb; }
 
       #toggle {
-        flex: 60;
-        background: #111;
+        flex: 6;
+        background: var(--blue);
         color: #fff;
         border: none;
       }
 
-      #toggle:hover {
-        background: var(--red);
+      #toggle:hover { opacity: 0.85; }
+
+      #toggle.running {
+        background: #ff3b30;
       }
     </style>
   </head>
@@ -292,14 +289,14 @@
       </div>
 
       <div class="row">
-        <span class="row-label">Interval · Seconds</span>
+        <span class="row-label">Interval (seconds)</span>
         <div class="row-value">
           <input id="interval" type="number" min="1" max="3600" step="1" value="10">
         </div>
       </div>
 
       <div class="pause-row">
-        <span class="row-label">Pause on User Input</span>
+        <span class="row-label">Pause on user input</span>
         <div class="row-value">
           <input id="pause" type="checkbox" checked>
           <label class="checkbox-label" for="pause"></label>
