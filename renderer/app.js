@@ -3,6 +3,7 @@
 const api = window.jigglerApi;
 
 const statusEl = document.getElementById('status');
+const statusDot = document.getElementById('status-dot');
 const intervalEl = document.getElementById('interval');
 const pauseEl = document.getElementById('pause');
 const toggleEl = document.getElementById('toggle');
@@ -11,10 +12,11 @@ const quitEl = document.getElementById('quit');
 function render(state) {
   if (!state) return;
   const running = Boolean(state.running);
-  statusEl.textContent = running ? 'Jiggling' : 'Idle';
-  statusEl.classList.toggle('on', running);
-  statusEl.classList.toggle('off', !running);
+  statusEl.textContent = running ? 'Active' : 'Idle';
+  statusDot.classList.toggle('on', running);
+  statusDot.classList.toggle('off', !running);
   toggleEl.textContent = running ? 'Stop' : 'Start';
+  toggleEl.classList.toggle('running', running);
   if (document.activeElement !== intervalEl) {
     intervalEl.value = String(state.settings.intervalSeconds);
   }
