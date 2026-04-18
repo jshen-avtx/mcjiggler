@@ -1,6 +1,6 @@
 {
   "name": "mcjiggler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "macOS menu-bar mouse jiggler",
   "main": "main.js",
   "bin": {
@@ -33,12 +33,16 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testMatch": ["**/tests/**/*.test.js"],
-    "collectCoverageFrom": ["lib/**/*.js"]
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "lib/**/*.js"
+    ]
   },
   "dependencies": {
     "@nut-tree-fork/nut-js": "^4.2.0",
-    "electron": "^31.0.0",
+    "electron": "^41.2.1",
     "electron-store": "^8.2.0"
   },
   "devDependencies": {
