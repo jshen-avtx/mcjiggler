@@ -4,93 +4,312 @@
     <meta charset="utf-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; script-src 'self'"
     />
     <title>Mouse Jiggler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
       :root {
-        color-scheme: light dark;
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+        --red: #B3261E;
+        --ink: #111111;
+        --dim: #555555;
+        --ghost: #bbbbbb;
       }
+
+      html, body {
+        width: 280px;
+        height: 260px;
+        overflow: hidden;
+        background: #ffffff;
+        color: var(--ink);
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 12px;
+      }
+
       body {
-        margin: 0;
-        padding: 14px 16px;
-        font-size: 13px;
+        display: flex;
+        flex-direction: column;
       }
+
+      /* ── Thick top rule ── */
+      .rule-top {
+        height: 5px;
+        background: var(--ink);
+        flex-shrink: 0;
+      }
+
+      /* ── Masthead / header ── */
+      .header {
+        padding: 8px 16px 3px;
+        border-bottom: 1px solid var(--ink);
+        flex-shrink: 0;
+      }
+
+      .pub-label {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 8px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 2px;
+      }
+
       h1 {
-        font-size: 14px;
-        margin: 0 0 10px;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 26px;
+        font-weight: 900;
+        font-style: italic;
+        color: var(--ink);
+        line-height: 0.92;
+        letter-spacing: -0.02em;
       }
+
+      /* Tagline locked unit: hairline — text — hairline */
+      .masthead-tagline {
+        margin-top: 1px;
+      }
+
+      .masthead-tagline .hairline {
+        display: block;
+        height: 1px;
+        background: var(--ink);
+      }
+
+      .vol-info {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 400;
+        font-size: 7.5px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink);
+        text-align: center;
+        padding: 2px 0;
+      }
+
+      /* ── Content ── */
+      .content {
+        flex: 1;
+        padding: 0 16px;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      /* All label/value rows */
+      .status-row,
       .row {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin: 10px 0;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--ink);
       }
-      .status {
-        padding: 2px 8px;
-        border-radius: 999px;
-        font-weight: 600;
-      }
-      .status.on {
-        background: rgba(52, 199, 89, 0.2);
-        color: rgb(30, 120, 60);
-      }
-      .status.off {
-        background: rgba(142, 142, 147, 0.2);
-        color: rgb(90, 90, 95);
-      }
-      button {
-        font: inherit;
-        padding: 6px 12px;
-        border-radius: 6px;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        background: rgba(255, 255, 255, 0.6);
-        cursor: pointer;
-      }
-      button.primary {
-        background: rgb(10, 132, 255);
-        color: white;
-        border-color: transparent;
-      }
-      input[type='number'] {
-        width: 72px;
-        font: inherit;
-        padding: 3px 6px;
-        border-radius: 4px;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-      }
-      .footer {
-        margin-top: 14px;
+
+      /* STATUS label — receded */
+      .status-label {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8A8A8A;
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* Red 2×8px bullet beside STATUS label when running */
+      .status-row:has(#status.on) .status-label::before {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 8px;
+        background: var(--red);
+        flex-shrink: 0;
+      }
+
+      /* Status value — dominant */
+      #status {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-left: auto;
+        color: #111;
+      }
+
+      #status.off { color: #111; }
+      #status.on  { color: #111; }
+
+      /* Row labels — receded */
+      .row .row-label {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8A8A8A;
+      }
+
+      /* Right-rail wrapper for values */
+      .row-value {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      input[type='number'] {
+        width: 48px;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--ink);
+        border-radius: 0;
+        color: #111;
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        padding: 1px 0;
+        outline: none;
+        text-align: right;
+      }
+
+      input[type='number']:focus {
+        border-bottom-color: #000;
+        border-bottom-width: 2px;
+      }
+
+      /* Hide native checkbox */
+      input[type='checkbox'] {
+        opacity: 0;
+        position: absolute;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+      }
+
+      /* Custom checkbox via label pseudo-element */
+      .checkbox-label {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 1px solid #111;
+        border-radius: 0;
+        background: transparent;
+        cursor: pointer;
+        flex-shrink: 0;
+        position: relative;
+      }
+
+      input[type='checkbox']:checked + .checkbox-label {
+        background: #111;
+      }
+
+      /* ── Pause row ── */
+      .pause-row {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        margin-bottom: 8px;
+        padding: 0;
+      }
+
+      .pause-row .row-label {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8A8A8A;
+      }
+
+      /* ── Button row ── */
+      .btn-row {
+        height: 40px;
+        display: flex;
+        align-items: stretch;
+        padding: 0 12px 12px;
+        flex-shrink: 0;
+      }
+
+      button {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        border-radius: 0;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      #quit {
+        flex: 40;
+        background: transparent;
+        color: #111;
+        border: 1px solid #111;
+        margin-right: 0;
+      }
+
+      #quit:hover {
+        background: #f5f5f5;
+      }
+
+      #toggle {
+        flex: 60;
+        background: #111;
+        color: #fff;
+        border: none;
+      }
+
+      #toggle:hover {
+        background: var(--red);
       }
     </style>
   </head>
   <body>
-    <h1>Mouse Jiggler</h1>
+    <div class="rule-top"></div>
 
-    <div class="row">
-      <span>Status</span>
-      <span id="status" class="status off">Idle</span>
+    <div class="header">
+      <div class="pub-label">Utility &mdash; Mouse Control</div>
+      <h1>Mouse<br>Jiggler</h1>
+      <div class="masthead-tagline">
+        <span class="hairline"></span>
+        <div class="vol-info">Vol. 1 &nbsp;&bull;&nbsp; System Tray Edition</div>
+        <span class="hairline"></span>
+      </div>
     </div>
 
-    <div class="row">
-      <label for="interval">Interval (s)</label>
-      <input id="interval" type="number" min="1" max="3600" step="1" />
+    <div class="content">
+      <div class="status-row">
+        <span class="status-label">Status</span>
+        <span id="status" class="off">Idle</span>
+      </div>
+
+      <div class="row">
+        <span class="row-label">Interval · Seconds</span>
+        <div class="row-value">
+          <input id="interval" type="number" min="1" max="3600" step="1" value="10">
+        </div>
+      </div>
+
+      <div class="pause-row">
+        <span class="row-label">Pause on User Input</span>
+        <div class="row-value">
+          <input id="pause" type="checkbox" checked>
+          <label class="checkbox-label" for="pause"></label>
+        </div>
+      </div>
     </div>
 
-    <div class="row">
-      <label for="pause">Pause on user input</label>
-      <input id="pause" type="checkbox" />
-    </div>
-
-    <div class="row">
-      <button id="toggle" class="primary">Start</button>
-    </div>
-
-    <div class="footer">
+    <div class="btn-row">
       <button id="quit">Quit</button>
+      <button id="toggle">Start</button>
     </div>
 
     <script src="./app.js"></script>
